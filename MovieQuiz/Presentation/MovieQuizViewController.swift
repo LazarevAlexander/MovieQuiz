@@ -93,9 +93,10 @@ final class MovieQuizViewController: UIViewController {
         }
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreenIOS.cgColor : UIColor.ypRedIOS.cgColor
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.imageView.layer.borderWidth = 0
             self.showNextQuestionOrResults()
         }
     }
@@ -108,10 +109,6 @@ final class MovieQuizViewController: UIViewController {
                 buttonText: "Сыграть еще раз")
             show(quiz: viewModel)
         } else {
-            // Прошу обратить внимание на строчку ниже, таким способом я реализовал
-            // удаление рамки перед новым фильмом
-            // Hасколько это допустимо?
-            self.imageView.layer.borderWidth = 0
             currentQuestionIndex += 1
             let nextQuestion = questions[currentQuestionIndex]
             show(quiz: convert(model: nextQuestion))
