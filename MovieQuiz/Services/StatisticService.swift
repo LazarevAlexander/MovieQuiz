@@ -13,40 +13,36 @@ final class StatisticService: StatisticServiceProtocol {
     
     private var correctAnswers: Int {
         get {
-            storage.integer(forKey: Keys.correctAnswers.rawValue)
+            storage.integer(forKey: Key.correctAnswers.rawValue)
         }
         set {
-            storage.set(newValue, forKey: Keys.correctAnswers.rawValue)
+            storage.set(newValue, forKey: Key.correctAnswers.rawValue)
         }
     }
     
     var totalAccuracy: Double {
-        if (gamesCount == 0){
-             0
-        } else{
-           (Double(correctAnswers) / ( 10 * Double(gamesCount))) * 100
-        }
+       gamesCount == 0 ? 0 : Double(correctAnswers) / (10 * Double(gamesCount)) * 100
     }
     
     var gamesCount: Int {
         get {
-            storage.integer(forKey: Keys.gamesCount.rawValue)
+            storage.integer(forKey: Key.gamesCount.rawValue)
         }
         set {
-            storage.set(newValue, forKey: Keys.gamesCount.rawValue)
+            storage.set(newValue, forKey: Key.gamesCount.rawValue)
         }
     }
         
     var bestGame: GameResult {
         get {
-            GameResult(correct: storage.integer(forKey: Keys.correct.rawValue),
-                       total: storage.integer(forKey: Keys.total.rawValue),
-                       date: storage.object(forKey: Keys.date.rawValue) as? Date ?? Date())
+            GameResult(correct: storage.integer(forKey: Key.correct.rawValue),
+                       total: storage.integer(forKey: Key.total.rawValue),
+                       date: storage.object(forKey: Key.date.rawValue) as? Date ?? Date())
         }
         set {
-            storage.set(newValue, forKey: Keys.correct.rawValue)
-            storage.set(newValue, forKey: Keys.total.rawValue)
-            storage.set(newValue, forKey: Keys.date.rawValue)
+            storage.set(newValue, forKey: Key.correct.rawValue)
+            storage.set(newValue, forKey: Key.total.rawValue)
+            storage.set(newValue, forKey: Key.date.rawValue)
         }
         
     }
@@ -55,14 +51,14 @@ final class StatisticService: StatisticServiceProtocol {
         correctAnswers += count
         gamesCount += 1
         let newGame = GameResult(correct: count, total: amount, date: Date())
-        if (newGame.isBetterThan(bestGame)) {
-            storage.set(newGame.correct, forKey: Keys.correct.rawValue)
-            storage.set(newGame.total, forKey: Keys.total.rawValue)
-            storage.set(newGame.date, forKey: Keys.date.rawValue)
+        if newGame.isBetterThan(bestGame) {
+            storage.set(newGame.correct, forKey: Key.correct.rawValue)
+            storage.set(newGame.total, forKey: Key.total.rawValue)
+            storage.set(newGame.date, forKey: Key.date.rawValue)
         }
     }
     
-    private enum Keys: String {
+    private enum Key: String {
         case correct
         case bestGame
         case gamesCount
