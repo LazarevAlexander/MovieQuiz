@@ -24,21 +24,21 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     }
     
     @IBAction private func noButtonClicked(_ sender: Any) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        showAnswerResult(isCorrect: !currentQuestion.correctAnswer)
+        presenter.currentQuestion = currentQuestion
+        presenter.noButtonClicked()
     }
     @IBAction private func yesButtonClicked(_ sender: Any) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        showAnswerResult(isCorrect: currentQuestion.correctAnswer)
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked()
     }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        presenter.viewController = self
+        
+        
         
         imageView.layer.cornerRadius = 20
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
@@ -116,7 +116,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         counterLabel.text = step.questionNumber
     }
     
-    private func showAnswerResult(isCorrect: Bool) {
+     func showAnswerResult(isCorrect: Bool) {
         if isCorrect {
             correctAnswers += 1
         }
